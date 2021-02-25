@@ -1,0 +1,96 @@
+// import time
+//
+// def get_halfway_index(length):
+//     print(length)
+//     return int(round((length / 2), 0))
+//
+// def binary_search(numbers, search):
+//     numbers.sort()
+//     halfway_index = get_halfway_index(len(numbers))
+//     print(halfway_index)
+//     halfway = numbers[halfway_index]
+//     print("Halfway number is %s" % halfway)
+//     if halfway == search:
+//         print("Found the search item")
+//         return halfway_index
+//     elif halfway > search:
+//         new_numbers_list_to_search = numbers[:halfway_index]
+//         print("New numbers list to search: ")
+//         print(new_numbers_list_to_search)
+//         binary_search(new_numbers_list_to_search, search)
+//         time.sleep(5)
+//     else:
+//         new_numbers_list_to_search = numbers[halfway_index:]
+//         print("New numbers list to search: ")
+//         print(new_numbers_list_to_search)
+//         binary_search(new_numbers_list_to_search, search)
+//         time.sleep(5)
+
+// console.log("working")
+
+const NUMBERS = [93,2,8,87,15,17,45,1,23,78,38,29,99,3,55,64,28,83,74,39,44,27,91,
+                 52,67,16,65,82,4,9,93,87,18];
+
+const NUMBERS_COPY = [93,2,8,87,15,17,45,1,23,78,38,29,99,3,55,64,28,83,74,39,44,27,91,
+                52,67,16,65,82,4,9,93,87,18];
+
+
+var get_halfway_index = function(length) {
+    return Math.round(length / 2)
+}
+
+
+console.assert(get_halfway_index(33) === 17)
+
+
+var binary_search = function(numbers, search, copy = []) {
+    console.log("copy at the beginning")
+    console.log(copy)
+    if (copy.length == 0) {
+      console.log("copy in the if loop where we make copy")
+      console.log(copy)
+      copy = [...numbers];
+      console.log("copy in the if loop after making copy")
+      console.log(copy)
+    }
+    // const numbers_copy = [...numbers];
+
+    // https://www.javascripttutorial.net/javascript-array-sort/
+    numbers.sort(function(a , b){
+        if(a > b) return 1;
+        if(a < b) return -1;
+        return 0;
+    });
+
+    halfway_index = get_halfway_index(numbers.length);
+    let halfway = numbers[halfway_index];
+    console.log("Halfway number is " + halfway);
+
+    if (numbers.length == 0) {
+        console.log("didn't find it")
+        return -1
+    }
+
+    if (halfway == search) {
+        let number_index = copy.indexOf(search);
+        console.log(copy)
+        console.log("found it at " + number_index)
+        return number_index;
+    } else if (halfway > search) {
+        let new_numbers_list_to_search = numbers.slice(0, halfway_index);
+        console.log("New numbers list to search:");
+        console.log(new_numbers_list_to_search);
+        binary_search(new_numbers_list_to_search, search, copy);
+    } else if (halfway < search) {
+        let new_numbers_list_to_search = numbers.slice(halfway_index + 1);
+        console.log("New numbers list to search:");
+        console.log(new_numbers_list_to_search);
+        binary_search(new_numbers_list_to_search, search, copy);
+    }
+}
+
+var index = binary_search(NUMBERS, 2)
+
+console.log("the index is " + index)
+
+// console.log(NUMBERS_COPY.indexOf(2))
