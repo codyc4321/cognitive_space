@@ -12,16 +12,9 @@ console.assert(get_halfway_index(33) === 17)
 
 
 var binary_search = function(numbers, search, copy = []) {
-    console.log("copy at the beginning")
-    console.log(copy)
     if (copy.length == 0) {
-      console.log("copy in the if loop where we make copy")
-      console.log(copy)
       copy = [...numbers];
-      console.log("copy in the if loop after making copy")
-      console.log(copy)
     }
-    // const numbers_copy = [...numbers];
 
     // https://www.javascripttutorial.net/javascript-array-sort/
     numbers.sort(function(a , b){
@@ -41,7 +34,6 @@ var binary_search = function(numbers, search, copy = []) {
 
     if (halfway == search) {
         let number_index = copy.indexOf(search);
-        console.log(copy)
         console.log("found it at " + number_index)
         return number_index;
     } else if (halfway > search) {
@@ -58,7 +50,7 @@ var binary_search = function(numbers, search, copy = []) {
 }
 
 var index = binary_search(NUMBERS, 2)
-
 console.log("the index is " + index)
 
-// console.log(NUMBERS_COPY.indexOf(2))
+var index_2 = binary_search(NUMBERS, 999)
+console.log("the index is " + index_2)

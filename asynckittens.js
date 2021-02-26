@@ -16,8 +16,6 @@ var http = require('http');
 var exec = require('child_process').exec;
 var spawn = require('child_process').spawn;
 
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-
 var DOWNLOAD_DIR = './downloads/';
 
 var generate_width_and_height = function() {
@@ -52,16 +50,22 @@ var download_file = function(file_number) {
 // download_file(1)
 
 
-function saveFile(url) {
+function saveFile(url, number) {
+  console.log(url)
   return new Promise(function(resolve, reject) {
-
+    download_file_wget(url, 1)
   }).then(function(xhr) {
-
+    console.log('downloaded')
   });
 }
 
 function download(urls) {
-  return Promise.all(urls.map(saveFile));
+  let promises = []
+  for (var i = 0; i <= 1; i++) {
+    promises.push(saveFile(urls[i], i));
+  }
+
+  return Promise.all(promises);
 }
 
 download(["http://placekitten.com/300/300", "http://placekitten.com/250/250"])

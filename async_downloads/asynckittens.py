@@ -18,10 +18,10 @@ import urllib.request
 import threading
 from queue import Queue
 
-from flask import Flask, request, send_from_directory, render_template
+from flask import Flask, request, send_from_directory, render_template, redirect, url_for
 
 
-IMAGES = 4
+IMAGES = 128
 
 
 class DownloadThread(threading.Thread):
@@ -78,23 +78,17 @@ def generate_urls():
     return urls
 
 
-download(generate_urls(), "/Users/RG/Projects/static/images")
+download(generate_urls(), "/Users/RG/Projects/cognitive_space/async_downloads/static/images")
 
 
 # set the project root directory as the static folder, you can set others.
 app = Flask(__name__, static_url_path='')
 
-@app.route('/js/<path:path>')
-def send_js(path):
-    return send_from_directory('js', path)
 
-@app.route("/")
-def main():
-    return render_template('index.html')
+@app.route('/', methods=['GET'])
+def metrics():
+    return redirect(url_for('static', filename='index.html'))
 
-# @app.route('/')
-# def root():
-#     return app.send_static_file('index.html')
 
 if __name__ == "__main__":
     app.run()

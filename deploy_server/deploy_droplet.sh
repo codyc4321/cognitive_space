@@ -8,31 +8,27 @@
 # You will be asked to run your script during your interview, wait for the setup, and then show resulting web page in your browser like: `http://your-server:8000`
 #
 # Note: you may have to spend a few cents to bring up the server. But then promptly delete the server once your done.
-#
-#
-# ### server.py
-#
-# ```python
-# import http.server
-# import socketserver
-# from http import HTTPStatus
-#
-#
-# class Handler(http.server.SimpleHTTPRequestHandler):
-#     def do_GET(self):
-#         self.send_response(HTTPStatus.OK)
-#         self.end_headers()
-#         self.wfile.write(b'Hello world')
-#
-#
-# httpd = socketserver.TCPServer(('', 8000), Handler)
-# httpd.serve_forever()
-# ```
 
 
-doctl compute droplet create testdroplet --image ubuntu-18-04-x64 --size s-1vcpu-1gb --region nyc1
+# doctl compute droplet create testdroplet --image ubuntu-18-04-x64 --size s-1vcpu-1gb --region nyc1
 
-doctl compute ssh testdroplet
+doctl compute ssh testdroplet --ssh-command 'apt update'
 
+doctl compute ssh testdroplet --ssh-command 'apt upgrade'
 
-echo Hello World!
+doctl compute ssh testdroplet --ssh-command 'mkdir web'
+
+doctl compute ssh testdroplet --ssh-command 'touch ./web/server.py'
+
+doctl compute ssh testdroplet --ssh-command 'echo -e "import http.server\nimport socketserver\nfrom http import HTTPStatus\n\nclass Handler(http.server.SimpleHTTPRequestHandler):\n    def do_GET(self):\n        self.send_response(HTTPStatus.OK)\n        self.end_headers()\n" >> web/server.py'
+doctl compute ssh testdroplet --ssh-command "printf '        self.wfile.write(b' >> web/server.py"
+doctl compute ssh testdroplet --ssh-command "printf \' >> web/server.py"
+doctl compute ssh testdroplet --ssh-command "printf 'Hello world' >> web/server.py"
+doctl compute ssh testdroplet --ssh-command "printf \' >> web/server.py"
+doctl compute ssh testdroplet --ssh-command "printf ')\n\n\n' >> web/server.py"
+doctl compute ssh testdroplet --ssh-command "printf 'httpd = socketserver.TCPServer((' >> web/server.py"
+doctl compute ssh testdroplet --ssh-command "printf \' >> web/server.py"
+doctl compute ssh testdroplet --ssh-command "printf \' >> web/server.py"
+doctl compute ssh testdroplet --ssh-command "printf ', 8000), Handler)\nhttpd.serve_forever()' >> web/server.py"
+
+doctl compute ssh testdroplet --ssh-command 'python3 web/server.py'
