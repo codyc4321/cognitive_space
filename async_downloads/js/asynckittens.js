@@ -9,27 +9,25 @@ Then generate a static HTML page or dynamic page in the browser that shows off a
 */
 
 var fs = require('fs');
-var url = require('url');
+// var url = require('url');
 var http = require('http');
 var exec = require('child_process').exec;
-var spawn = require('child_process').spawn;
 
 var DOWNLOAD_DIR = './images/';
 
 var generate_width_and_height = function() {
   const random = Math.floor((Math.random() * 100) + 200);
-  console.log(random);
   return random
 }
 
 
 var create_file_url = function() {
-    return "http://placekitten.com/" + generate_width_and_height() + "/" + generate_width_and_height()
+    return "http://placekitten.com/" + generate_width_and_height() + "/" + generate_width_and_height();
 }
 
 // https://www.hacksparrow.com/nodejs/using-node-js-to-download-files.html
 var download_file_wget = function(file_url, file_number) {
-    var file_name = "file_" + file_number
+    var file_name = "file_" + file_number;
 
     var wget = 'wget -O ' + DOWNLOAD_DIR + '/file_' + file_number + ' '+ file_url;
 
@@ -49,7 +47,7 @@ function saveFile(url, number) {
     return new Promise(function(resolve, reject) {
         download_file_wget(url, number)
     }).then(function(xhr) {
-        console.log('downloaded')
+        console.log('downloaded file ' + number)
     });
 }
 

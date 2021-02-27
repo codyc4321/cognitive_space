@@ -40,17 +40,23 @@ var binary_search = function(numbers, search, copy = []) {
         let new_numbers_list_to_search = numbers.slice(0, halfway_index);
         console.log("New numbers list to search:");
         console.log(new_numbers_list_to_search);
-        binary_search(new_numbers_list_to_search, search, copy);
+        return binary_search(new_numbers_list_to_search, search, copy);
     } else if (halfway < search) {
         let new_numbers_list_to_search = numbers.slice(halfway_index + 1);
         console.log("New numbers list to search:");
         console.log(new_numbers_list_to_search);
-        binary_search(new_numbers_list_to_search, search, copy);
+        return binary_search(new_numbers_list_to_search, search, copy);
     }
 }
 
 var index = binary_search(NUMBERS, 2)
 console.log("the index is " + index)
+console.assert(index === 1)
 
 var index_2 = binary_search(NUMBERS, 999)
 console.log("the index is " + index_2)
+console.assert(index === -1)
+
+var index_3 = binary_search(NUMBERS, 8)
+console.log("the index is " + index_3)
+console.assert(index === 2)

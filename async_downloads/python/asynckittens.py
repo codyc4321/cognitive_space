@@ -11,6 +11,8 @@
 # # url = 'http://placekitten.com/300/300'
 # urllib.request.urlretrieve(url, '/Users/RG/Projects/downloads/cat.jpg')
 
+import concurrent.futures
+
 import random
 import sys
 import os
@@ -46,7 +48,7 @@ class DownloadThread(threading.Thread):
         # name = url.split('/')[-1]
         name = "file_" + str(self.number)
         dest = os.path.join(self.destfolder, name)
-        print("[%s] Downloading %s -> %s" % (self.ident, url, dest))
+        print("Downloading %s -> %s" % (url, dest))
         urllib.request.urlretrieve(url, dest)
 
 
@@ -78,7 +80,20 @@ def generate_urls():
     return urls
 
 
-download(generate_urls(), "/Users/RG/Projects/cognitive_space/async_downloads/static/images")
+
+def download_url(url, number):
+    name = "file_" + str(number)
+    dest = os.path.join("/Users/RG/Projects/cognitive_space/async_downloads/python/static/images", name)
+    print("Downloading %s -> %s" % (url, dest))
+    urllib.request.urlretrieve(url, dest)
+
+
+with concurrent.futures.ThreadPoolExecutor() as executor:
+    futures = []
+    for i in range(128):
+        futures.append(executor.submit(download_url, url=get_url(), number=(i + 1)))
+    for future in concurrent.futures.as_completed(futures):
+        print(future.result())
 
 
 # set the project root directory as the static folder, you can set others.
