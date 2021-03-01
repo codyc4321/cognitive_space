@@ -14,6 +14,7 @@ console.assert(get_halfway_index(33) === 17)
 var binary_search = function(numbers, search, copy = []) {
     if (copy.length == 0) {
       copy = [...numbers];
+      numbers = [...numbers];
     }
 
     // https://www.javascripttutorial.net/javascript-array-sort/
@@ -32,19 +33,31 @@ var binary_search = function(numbers, search, copy = []) {
         return -1
     }
 
+    console.log("numbers length " + numbers.length)
+    if (numbers.length == 1) {
+        if (numbers[0] == search) {
+            let number_index = copy.indexOf(search);
+            console.log("found it at " + number_index)
+            return number_index;
+        } else {
+            console.log("didn't find it in else")
+            return -1
+        }
+    }
+
     if (halfway == search) {
         let number_index = copy.indexOf(search);
         console.log("found it at " + number_index)
         return number_index;
     } else if (halfway > search) {
         let new_numbers_list_to_search = numbers.slice(0, halfway_index);
-        console.log("New numbers list to search:");
-        console.log(new_numbers_list_to_search);
+        // console.log("New numbers list to search:");
+        // console.log(new_numbers_list_to_search);
         return binary_search(new_numbers_list_to_search, search, copy);
     } else if (halfway < search) {
         let new_numbers_list_to_search = numbers.slice(halfway_index + 1);
-        console.log("New numbers list to search:");
-        console.log(new_numbers_list_to_search);
+        // console.log("New numbers list to search:");
+        // console.log(new_numbers_list_to_search);
         return binary_search(new_numbers_list_to_search, search, copy);
     }
 }
@@ -55,8 +68,8 @@ console.assert(index === 1)
 
 var index_2 = binary_search(NUMBERS, 999)
 console.log("the index is " + index_2)
-console.assert(index === -1)
-
+console.assert(index_2 === -1)
+//
 var index_3 = binary_search(NUMBERS, 8)
 console.log("the index is " + index_3)
-console.assert(index === 2)
+console.assert(index_3 === 2)
