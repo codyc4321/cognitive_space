@@ -9,7 +9,10 @@
 #
 # Note: you may have to spend a few cents to bring up the server. But then promptly delete the server once your done.
 
-
+# doctl auth init
+#
+# doctl compute ssh testdroplet
+#
 # doctl compute droplet create testdroplet --image ubuntu-18-04-x64 --size s-1vcpu-1gb --region nyc1
 
 doctl compute ssh testdroplet --ssh-command 'apt update'
